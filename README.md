@@ -21,7 +21,14 @@ The GNM model itself (~150 MB of weights) isn't bundled in this repo, and
 neither is the browser build's ~19 MB export of it — both are one-time
 downloads/builds, done once and then reused on every future `npm run dev`.
 
+`pip install` always installs into whichever Python environment is currently
+active — so if you use conda/venv, activate it first (e.g. `conda activate
+<env>`) and use that same environment for every `python`/`pip` command below.
+
 ```bash
+# 0. Activate your Python environment first, e.g.:
+#    conda activate <env>
+
 # 1. Get the GNM Head model (not on PyPI yet, so install from source)
 git clone https://github.com/google/GNM.git
 pip install -e ./GNM/gnm/shape
