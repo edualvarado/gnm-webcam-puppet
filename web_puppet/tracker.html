@@ -1,0 +1,152 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>GNM Head — M3 tracker</title>
+    <style>
+      :root {
+        --teal: #2f8871;
+        --teal-bright: #54c4a7;
+        --navy: #283477;
+        --plum-bright: #9b3ca1;
+
+        --bg: #070a18;
+        --panel: rgba(21, 27, 63, 0.72);
+        --edge: rgba(47, 136, 113, 0.28);
+        --text: #cfe8de;
+        --dim: #7d93a4;
+      }
+
+      * { box-sizing: border-box; }
+
+      html, body {
+        margin: 0;
+        height: 100%;
+        background: var(--bg);
+        color: var(--text);
+        font: 13px/1.5 ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+        overflow: hidden;
+      }
+
+      #app {
+        display: flex;
+        flex-direction: column;
+        height: 100%;
+        align-items: center;
+        justify-content: center;
+        gap: 18px;
+        padding: 24px;
+      }
+
+      #stage {
+        position: relative;
+        max-width: 100%;
+        max-height: 72vh;
+        aspect-ratio: 16 / 9;
+        border: 1px solid var(--edge);
+        border-radius: 6px;
+        overflow: hidden;
+        background: #000;
+      }
+
+      /* The video is the pixel source for the canvas, never displayed itself:
+         drawing it into the canvas is what lets the overlay share one
+         mirroring transform with the image. */
+      #video { display: none; }
+      #overlay { display: block; width: 100%; height: 100%; object-fit: contain; }
+
+      #hud {
+        display: flex;
+        gap: 28px;
+        align-items: flex-start;
+        padding: 14px 18px;
+        background: var(--panel);
+        border: 1px solid var(--edge);
+        border-radius: 6px;
+      }
+
+      #readout {
+        margin: 0;
+        white-space: pre;
+        color: var(--teal-bright);
+        font: inherit;
+        min-width: 260px;
+      }
+
+      #status { color: var(--dim); }
+
+      .controls { display: flex; flex-direction: column; gap: 10px; }
+
+      label.toggle {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        color: var(--dim);
+        cursor: pointer;
+        user-select: none;
+      }
+      input[type="checkbox"] { accent-color: var(--teal); }
+
+      button {
+        padding: 8px 14px;
+        font: inherit;
+        font-size: 11px;
+        color: var(--text);
+        background: transparent;
+        border: 1px solid var(--edge);
+        border-radius: 4px;
+        cursor: pointer;
+        transition: background 0.15s, border-color 0.15s;
+      }
+      button:hover:not(:disabled) {
+        background: rgba(155, 60, 161, 0.14);
+        border-color: rgba(155, 60, 161, 0.55);
+      }
+      button:disabled { opacity: 0.4; cursor: default; }
+
+      .legend { display: flex; gap: 16px; color: var(--dim); font-size: 11px; }
+      .swatch {
+        display: inline-block;
+        width: 9px;
+        height: 9px;
+        border-radius: 2px;
+        margin-right: 5px;
+        vertical-align: -1px;
+      }
+
+      a { color: var(--teal-bright); }
+    </style>
+  </head>
+  <body>
+    <div id="app">
+      <div id="stage">
+        <video id="video" playsinline muted></video>
+        <canvas id="overlay"></canvas>
+      </div>
+
+      <div id="hud">
+        <pre id="readout">—</pre>
+        <div class="controls">
+          <button id="start" disabled>Start camera</button>
+          <label class="toggle">
+            <input type="checkbox" id="mirror" checked />mirror
+          </label>
+          <label class="toggle">
+            <input type="checkbox" id="showMesh" checked />all 478 points
+          </label>
+        </div>
+      </div>
+
+      <div class="legend">
+        <span><i class="swatch" style="background:#7cdec5"></i>landmarks / iris</span>
+        <span><i class="swatch" style="background:#54c4a7"></i>eye contour</span>
+        <span><i class="swatch" style="background:#9b3ca1"></i>gaze</span>
+      </div>
+
+      <div id="status">Loading…</div>
+      <div><a href="./index.html">← M1/M2 viewer</a></div>
+    </div>
+    <script type="module" src="/src/tracker.ts"></script>
+  </body>
+</html>

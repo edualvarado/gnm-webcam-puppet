@@ -1,0 +1,19 @@
+# Node / web_puppet
+node_modules/
+dist/
+
+# Python
+__pycache__/
+*.pyc
+*.egg-info/
+.pytest_cache/
+
+# Auto-downloaded on first run (see webcam_puppet/tracker.py)
+webcam_puppet/assets/face_landmarker.task
+
+# Editors / notebooks
+.ipynb_checkpoints/
+
+# Env / secrets
+.env
+.env.*

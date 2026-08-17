@@ -1,0 +1,24 @@
+{
+  "name": "gnm-web-puppet",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "description": "Browser-native GNM head viewer and webcam puppet.",
+  "scripts": {
+    "dev": "vite",
+    "build": "tsc --noEmit && vite build",
+    "preview": "vite preview",
+    "test": "node --test src/*.test.ts",
+    "sync-assets": "node tools/sync_web_assets.mjs"
+  },
+  "dependencies": {
+    "@mediapipe/tasks-vision": "^1.0.1",
+    "three": "^0.185.1"
+  },
+  "devDependencies": {
+    "@types/node": "^26.1.2",
+    "@types/three": "^0.185.3",
+    "typescript": "^7.0.2",
+    "vite": "^8.2.0"
+  }
+}

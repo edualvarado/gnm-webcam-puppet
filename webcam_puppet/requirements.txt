@@ -1,0 +1,8 @@
+# Webcam puppet dependencies.
+#
+# The GNM model itself must also be installed, from the repository root:
+#   pip install -e "./gnm/shape"
+#
+# opencv-python, numpy, scipy, imageio, absl-py, etils and immutabledict all
+# come in via gnm-shape, so mediapipe is the only addition.
+mediapipe>=0.10
