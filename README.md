@@ -11,15 +11,31 @@ parametric model of a human head/face.
 
 ## Try it: the browser version
 
-**[`web_puppet/`](web_puppet/)** is the one to run — everything is rendered
-on your GPU inside the page, so it's fast, it's the good-looking version (see
-the gif above), and there is nothing to install beyond Node for the one-time
-build.
+**[`web_puppet/`](web_puppet/)** is the one to run — everything renders on
+your GPU inside the page, so it's fast, it's the good-looking version (see
+the gif above), and once it's built there's nothing to install to *use* it.
+
+**You'll need:** [Node.js](https://nodejs.org/), Python 3.10+, and `git`.
+
+The GNM model itself (~150 MB of weights) isn't bundled in this repo, and
+neither is the browser build's ~19 MB export of it — both are one-time
+downloads/builds, done once and then reused on every future `npm run dev`.
 
 ```bash
+# 1. Get the GNM Head model (not on PyPI yet, so install from source)
+git clone https://github.com/google/GNM.git
+pip install -e ./GNM/gnm/shape
+
+# 2. Fetch the face-tracking model, then export GNM's weights into the
+#    compact format the browser build reads (~19 MB, generated once)
+curl -L -o webcam_puppet/assets/face_landmarker.task \
+  https://storage.googleapis.com/mediapipe-models/face_landmarker/face_landmarker/float16/1/face_landmarker.task
+python -m web_puppet.tools.export_assets
+
+# 3. Run the browser demo
 cd web_puppet
 npm install
-npm run sync-assets   # first time only: fetches the face-tracking model
+npm run sync-assets   # copies the tracking model into the web app
 npm run dev           # open http://localhost:5173
 ```
 
@@ -100,8 +116,8 @@ feed never leaves your machine.
 | [`webcam_puppet/`](webcam_puppet/README.md) | Python desktop version — the earlier prototype, useful for hacking on the tracking/solving code directly |
 
 Neither directory modifies or vendors the GNM package itself; both depend on
-it via `pip install gnm-shape` (or `pip install -e ./gnm/shape` from a GNM
-checkout) for the Python side, and via the exported assets built by
+it via `pip install -e` from a [google/GNM](https://github.com/google/GNM)
+checkout for the Python side, and via the exported assets built by
 `web_puppet/tools/export_assets.py` for the browser side.
 
 ## License
